@@ -1,0 +1,15 @@
+Some function don't work on Linux version of Simca-QP:
+
+* int SQX_GetVersionNumber(char **):
+
+      Declared in header SQXCInterface.h, but is not defined in the Simca-Q
+      library. Use objdump -TC /usr/local/lib/libsimca.so to examine the
+      dynamic symbol table.
+
+* int SQX_GetLoggingStatus(int *):
+* int SQX_SetLoggingStatus(int):
+
+      Both these function makes the application hang waiting for another
+      thread to wake up process sleeping on futex(2) call (a bug?)
+      
+// Anders Lövgren, 2008-01-23

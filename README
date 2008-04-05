@@ -1,0 +1,39 @@
+*** ABOUT LIBCHEMGPS ***
+
+** GENERAL:
+
+   The libchemgps library is a generic library for making predictions using
+   Simca-QP. Use this library to write standalone and client/server
+   applications for Simca-QP. The chemgps-sqp2 package contains both a fully
+   functional standalone application as well as an client/server solution.
+   
+   You need a separate license from Umetrics (http://www.umetrics.com) for 
+   using this library.
+
+** BUILD:
+
+   Configure and build with (64-bit Linux):
+   
+     bash$> CC="gcc32" CFLAGS="-Wall -O -g -m32" ./configure
+     bash$> make
+
+   See docs/README.compiler for build notes.
+   
+** USAGE:
+
+   See the manual page and the chemgps-sqp2 package for example code.
+   
+   In short, define callbacks and initilize an cgps_options structure.
+   Call cgps_project_load() to load the project. 
+   
+   For each prediction call cgps_predict_init() and cgps_predict() to 
+   make the prediction. 
+   
+   Get the result of prediction using cgps_result_init() and cgps_result(). 
+   
+   Cleanup and after each prediction by calling cgps_predict_cleanup() and
+   cgps_result_cleanup().
+   
+   Unload the project by calling cgps_project_close().
+   
+Anders, 2008-03-31

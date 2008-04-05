@@ -1,0 +1,12 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: libchemgps
+Description: Library for making predictions using Simca-QP
+URL: http://www.algonet.se/~lespaul/proj/libchemgps
+Version: @VERSION@
+Requires:
+Libs: -L${libdir} -lchemgps
+Cflags:

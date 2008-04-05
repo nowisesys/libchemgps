@@ -1,0 +1,179 @@
+.TH LIBCHEMGPS 3 "5 April 2008" "Uppsala Biomedical Centre (BMC)" "Linux Programmer's Manual" 
+.\"
+.\"     Copyright (c) 2007-2008 Anders Lövgren and the Computing Department,
+.\"     Uppsala Biomedical Centre, Uppsala University.
+.\"
+.\"     This program is free software; you can redistribute it and/or modify
+.\"     it under the terms of the GNU General Public License as published by
+.\"     the Free Software Foundation; either version 2 of the License, or
+.\"     (at your option) any later version.
+.\"
+.\"     This program is distributed in the hope that it will be useful,
+.\"     but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\"     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\"     GNU General Public License for more details.
+.\"
+.\"     You should have received a copy of the GNU General Public License
+.\"     along with this program; if not, write to the Free Software
+.\"     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+.\"
+.\"
+.SH NAME
+libchemgps \- C library for making predictions using Simca-QP.
+.SH SYNOPSIS
+.B #include <chemgps.h>
+.SH DESCRIPTION
+libchemgps is a library for making predictions using the Simca-QP from Umetrics. You need a valid license for Simca-QP to use this library.
+.PP
+The libchemgps library tries to make it easy to build both standalone applications and client/server applications that uses Simca-QP. The idea behind this library is that you load the project once and makes multiple predictions against it (client/server), thus reducing the time for each prediction by having the project already loaded.
+.PP
+Loading data for predictions requires a user supplied callback function. This is a design decission made because it enables the library user to fetch data for prediction from a number of different data sources, like databases, files, network etc.
+.PP
+The result is retreived by calling cgps_result() with a FILE pointer as argument. By this method its easy to send the result to a file, a TCP/IP or UNIX socket, or maybe a memory buffer.
+.PP
+The usage pattern is to initilize an cgps_options struct (common options) and using it when calling cgps_project_load(). The same options struct can be used to load multiple projects. Once the project is loaded, it just to iterate over the models contained in the project, calling cgps_predict() and cgps_result() for each.
+
+.SH SUMMARY
+.TP
+\fBint cgps_project_load\fI(struct cgps_project *proj, const char *path, struct cgps_options *opts);\fP
+Loads the project in path. The opts argument should be zeroed and initilized before calling cgps_project_load() for the first time. The same cgps_options may be used in multiple calls to cgps_project_load.
+.TP
+\fBvoid cgps_project_close\fI(struct cgps_project *proj);\fP
+Close the project and release allocated resources.
+.TP
+\fBvoid cgps_predict_init\fI(struct cgps_project *proj, struct cgps_predict *pred);\fP
+Initilize library for prediction.
+.TP
+\fBint cgps_predict\fI(struct cgps_project *proj, int index, struct cgps_predict *pred);\fP
+Make prediction and returns model number or -1 on error.
+.TP
+\fBvoid cgps_predict_cleanup\fI(struct cgps_project *proj, struct cgps_predict *pred);\fP
+Cleanup after an prediction.
+.TP
+\fBint cgps_result_init\fI(struct cgps_project *proj, struct cgps_result *res);\fP
+Initilize result.
+.TP
+\fBint cgps_result\fI(struct cgps_project *proj, int model, struct cgps_predict *pred, struct cgps_result *res, FILE *out);\fP
+Write result for model to output stream out (i.e. a file or an socket).
+.TP
+\fBvoid cgps_result_cleanup\fI(struct cgps_project *proj, struct cgps_result *res);\fP
+Cleanup result.
+.TP
+\fBint cgps_set_option\fI(struct cgps_project *proj, int option, const void *value);\fP
+Sets an option value. The option argument is one of CGPS_OPTION_XXX. This is an alternative to modifying the cgps_options struct direct.
+.TP
+\fBint cgps_get_option\fI(struct cgps_project *proj, int option, void *value);\fP
+Gets an option value. The option argument is one of CGPS_OPTION_XXX. This is an alternative to accessing the cgps_options struct direct.
+
+.SH CALLBACKS
+The libchemgps library requires that the datfunc is defined and set in the cgps_options struct passed to cgps_project_load. The logfunc callback is optional, if its unset, then stderr is used as destination for log messages.
+.TP
+\fBtypedef int (*datfunc)\fI(struct cgps_project *proj, SQX_FloatMatrix *fmx, SQX_StringMatrix *smx, SQX_StringVector *names, int type);\fP
+Callback for loading data for prediction. Either the fmx or the smx argument is used depending on the type argument that has one of the CGPS_GET_XXX_DATA as value.
+.TP
+\fBtypedef void (*logfunc)\fI(void *pref, int status, int code, int level, const char *file, unsigned int line, const char *fmt, ...);\fP
+Callback for logging library messages, used as value for the logger member of cgps_options. 
+
+.RS
+.nf
+.B Example logfunc callback:
+
+/*
+ * Arguments:
+ *     pref:   the cgps_options struct passed to cgps_project_load. 
+ *     status: exit code (use it as an severity hint). 
+ *     code:   errno value when calling logfunc.
+ *     level:  one of syslog (3) LOG_ERR, LOG_WARNING, LOG_INFO, LOG_DEBUG or LOG_CRIT. 
+ *
+ * The file and line argument is the code location where the callback got 
+ * called (the __FILE__ and __LINE__ macros).
+ */
+void logger(void *pref, int status, int code, int level, const char *file, unsigned int line, const char *fmt, ...)
+{
+        struct cgps_options *opts = (struct cgps_options *)pref;
+        va_list ap;
+        va_start(ap, fmt);
+    
+        if(opts->syslog) {
+                vsyslog(level, fmt, ap);
+        } else {
+                vfprintf(stderr, fmt, ap);
+        }
+        va_end(ap);				}
+}
+
+.SH EXAMPLE
+A simple example showing basic library usage:
+.RS
+.nf
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <chemgps.h>
+
+/*
+ * Using callback functions cgps_syslog() and cgps_load_data()
+ * defined elsewhere. Error handling at minimum for readability.
+ */
+
+static void die(const char *msg)
+{
+        fprintf(stderr, "%s\\n", msg);
+        exit(1);
+}
+
+int main(void)
+{
+        struct cgps_options opts;
+        struct cgps_project proj;
+        struct cgps_predict pred;
+        struct cgps_result res;
+        int i, model;
+		
+        memset(&opts, 0, sizeof(struct cgps_options));
+        
+        opts->cgps->logger = cgps_syslog;
+        opts->cgps->indata = cgps_load_data;
+				
+        if(cgps_project_load(&proj, opts->proj, opts->cgps) == 0) {
+                for(i = 1; i <= proj.models; ++i) {
+                        cgps_predict_init(&proj, &pred);
+                        if((model = cgps_predict(&proj, i, &pred)) != -1) {
+                                if(cgps_result_init(&proj, &res) == 0) {
+                                        if(cgps_result(&proj, model, &pred, &res, stdout) != 0) {
+           	                                die("get result failed");
+           	                        }
+                                        cgps_result_cleanup(&proj, &res);
+           	                } else {
+           	                        die("initilize result failed");
+           	                }
+                        } else {
+                                die("predict failed");
+                        }
+                }
+        } else {
+                die("failed load project");
+        }
+        
+        return 0;
+}
+.RE
+.fi
+
+.SH BUGS
+This library is used in production environment with an project using quantitative data. The other three types of data loading is implemented but untested until I find a project using them.
+
+.SH AUTHOR
+Anders Lövgren <anders.lovgren@bmc.uu.se>
+
+.SH COPYRIGHT
+Copyright (C) 2007-2008 Anders Lövgren and the Computing Department, Uppsala Biomedical Centre, Uppsala University.
+
+.SH LICENSE
+The libchemgps library is released under the GNU General Public License.
+
+.SH SEE ALSO
+.BR cgpsd (8), 
+.BR cgpsclt (1), 
+.BR cgpsstd (1)
