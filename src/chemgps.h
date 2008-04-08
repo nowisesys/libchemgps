@@ -41,7 +41,7 @@ struct cgps_project
 };
 
 typedef void (*logfunc)(void *pref, int status, int code, int level, const char *file, unsigned int line, const char *fmt, ...);
-typedef int  (*datfunc)(struct cgps_project *proj, SQX_FloatMatrix *fmx, SQX_StringMatrix *smx, SQX_StringVector *names, int type);
+typedef int  (*datfunc)(struct cgps_project *proj, void *data, SQX_FloatMatrix *fmx, SQX_StringMatrix *smx, SQX_StringVector *names, int type);
 
 struct cgps_options
 {
@@ -72,6 +72,7 @@ struct cgps_predict
 	SQX_StringVector lagparents;         /* lag parent names for Predict() */
 	SQX_StringVector qualnames;          /* qualitative names for Predict() */
 	SQX_StringVector qlagnames;          /* qualitative lagged data names for Predict() */
+	void *data;                          /* callback data for indata() */
 };
 
 struct cgps_result
@@ -191,7 +192,7 @@ void cgps_project_close(struct cgps_project *proj);
 /*
  * Initilize for prediction.
  */
-void cgps_predict_init(struct cgps_project *proj, struct cgps_predict *pred);
+void cgps_predict_init(struct cgps_project *proj, struct cgps_predict *pred, void *data);
 
 /*
  * Make prediction and returns model number or -1 on error.

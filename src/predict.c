@@ -39,12 +39,13 @@
 #include "simcaqp.h"
 
 /*
- * Initilize for prediction.
+ * Initilize for prediction. The data argument are data for indata callback.
  */
-void cgps_predict_init(struct cgps_project *proj, struct cgps_predict *pred)
+void cgps_predict_init(struct cgps_project *proj, struct cgps_predict *pred, void *data)
 {
 	debug("cgps_predict_init: initilizing predict structure");
 	memset(pred, 0, sizeof(struct cgps_predict));
+	pred->data = data;
 }
 
 /*

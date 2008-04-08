@@ -102,7 +102,7 @@ int cgps_predict_get_raw_data(struct cgps_project *proj, int model, struct cgps_
 			return -1;
 		}
 		
-		if(proj->opts->indata(proj, pred->morawdata, NULL, names, CGPS_GET_QUANTITATIVE_DATA) < 0) {
+		if(proj->opts->indata(proj, pred->data, pred->morawdata, NULL, names, CGPS_GET_QUANTITATIVE_DATA) < 0) {
 			logerr("failed load raw data (quantitative)");
 			return -1;
 		}
@@ -150,7 +150,7 @@ int cgps_predict_get_lag_parents(struct cgps_project *proj, int model, struct cg
 			return -1;
 		}
 		
-		if(proj->opts->indata(proj, pred->molagdata, NULL, parents, CGPS_GET_LAG_PARENTS_DATA) < 0) {
+		if(proj->opts->indata(proj, pred->data, pred->molagdata, NULL, parents, CGPS_GET_LAG_PARENTS_DATA) < 0) {
 			logerr("failed load lagged variables (parents)");
 			return -1;
 		}
@@ -208,7 +208,7 @@ int cgps_predict_get_qual_data(struct cgps_project *proj, int model, struct cgps
 			return -1;
 		}
 		
-		if(proj->opts->indata(proj, NULL, pred->mqrawdata, names, CGPS_GET_QUALITATIVE_DATA) < 0) {
+		if(proj->opts->indata(proj, pred->data, NULL, pred->mqrawdata, names, CGPS_GET_QUALITATIVE_DATA) < 0) {
 			logerr("failed load lagged variables (parents)");
 			return -1;
 		}
@@ -256,7 +256,7 @@ int cgps_predict_get_qual_data_lagged(struct cgps_project *proj, int model, stru
 			return -1;
 		}
 		
-		if(proj->opts->indata(proj, NULL, pred->mqlagdata, names, CGPS_GET_QUAL_LAGGED_DATA) < 0) {
+		if(proj->opts->indata(proj, pred->data, NULL, pred->mqlagdata, names, CGPS_GET_QUAL_LAGGED_DATA) < 0) {
 			logerr("failed load lagged variables (parents)");
 			return -1;
 		}
