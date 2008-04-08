@@ -1,7 +1,8 @@
-Version 0.6.0 (2008-mm-dd):
+Version 0.6.0 (2008-04-09):
 
 	* Split the code into two packages: applications (chemgps-sqp2) and 
-	  a library part (this code).
+	  a library part (this code). This code now fully support writing
+	  client/server code using both local (UNIX) and network (TCP) sockets.
 
 *** Historical notes from chemgps-sqp (the standalone only version):
 
