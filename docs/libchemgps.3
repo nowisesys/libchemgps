@@ -1,4 +1,5 @@
 .TH LIBCHEMGPS 3 "5 April 2008" "Uppsala Biomedical Centre (BMC)" "Linux Programmer's Manual" 
+.\" Format as -*- sh -*-
 .\"
 .\"     Copyright (c) 2007-2008 Anders Lövgren and the Computing Department,
 .\"     Uppsala Biomedical Centre, Uppsala University.
@@ -25,13 +26,15 @@ libchemgps \- C library for making predictions using Simca-QP.
 .SH DESCRIPTION
 libchemgps is a library for making predictions using the Simca-QP from Umetrics. You need a valid license for Simca-QP to use this library.
 .PP
-The libchemgps library tries to make it easy to build both standalone applications and client/server applications that uses Simca-QP. The idea behind this library is that you load the project once and makes multiple predictions against it (client/server), thus reducing the time for each prediction by having the project already loaded.
+The libchemgps library tries to make it easy to build both standalone applications and client/server applications that uses Simca-QP. The idea behind this library is to enable loading the project once and making multiple predictions against it (the client/server model), thus reducing the waste of time loading the project over and over (a time consuming task).
 .PP
-Loading data for predictions requires a user supplied callback function. This is a design decission made because it enables the library user to fetch data for prediction from a number of different data sources, like databases, files, network etc.
+Loading data for predictions requires a user supplied callback function. That's a design decision that enables loading of data for prediction from a number of different data sources (like databases, files/pipes or over the network) while providing a clean library API. The library implements on demand loading of quantitative, qualitative, parents lagged and qualitative lagged data.
 .PP
-The result is retreived by calling cgps_result() with a FILE pointer as argument. By this method its easy to send the result to a file, a TCP/IP or UNIX socket, or maybe a memory buffer.
+The result from a prediction is retreived by calling cgps_result() with a FILE * argument (the out argument). This makes it easy to send the result to i.e stdout, a TCP or UNIX socket or memory opened by calling 
+.BR fmemopen (3).
 .PP
-The usage pattern is to initilize an cgps_options struct (common options) and using it when calling cgps_project_load(). The same options struct can be used to load multiple projects. Once the project is loaded, it just to iterate over the models contained in the project, calling cgps_predict() and cgps_result() for each.
+The usage pattern is to initilize an cgps_options struct (common options) and using it when calling cgps_project_load(). The same options struct can be used to load multiple projects. 
+Once the project is loaded, call cgps_predict() and cgps_result() on one or more models in the project (see the example below).
 
 .SH SUMMARY
 .TP
@@ -41,8 +44,8 @@ Loads the project in path. The opts argument should be zeroed and initilized bef
 \fBvoid cgps_project_close\fI(struct cgps_project *proj);\fP
 Close the project and release allocated resources.
 .TP
-\fBvoid cgps_predict_init\fI(struct cgps_project *proj, struct cgps_predict *pred);\fP
-Initilize library for prediction.
+\fBvoid cgps_predict_init\fI(struct cgps_project *proj, struct cgps_predict *pred, void *data);\fP
+Initilize library for prediction. The data argument is passed to the datfunc callback when loading prediction data on demand and might be NULL.
 .TP
 \fBint cgps_predict\fI(struct cgps_project *proj, int index, struct cgps_predict *pred);\fP
 Make prediction and returns model number or -1 on error.
@@ -68,7 +71,7 @@ Gets an option value. The option argument is one of CGPS_OPTION_XXX. This is an 
 .SH CALLBACKS
 The libchemgps library requires that the datfunc is defined and set in the cgps_options struct passed to cgps_project_load. The logfunc callback is optional, if its unset, then stderr is used as destination for log messages.
 .TP
-\fBtypedef int (*datfunc)\fI(struct cgps_project *proj, SQX_FloatMatrix *fmx, SQX_StringMatrix *smx, SQX_StringVector *names, int type);\fP
+\fBtypedef int (*datfunc)\fI(struct cgps_project *proj, void *data, SQX_FloatMatrix *fmx, SQX_StringMatrix *smx, SQX_StringVector *names, int type);\fP
 Callback for loading data for prediction. Either the fmx or the smx argument is used depending on the type argument that has one of the CGPS_GET_XXX_DATA as value.
 .TP
 \fBtypedef void (*logfunc)\fI(void *pref, int status, int code, int level, const char *file, unsigned int line, const char *fmt, ...);\fP
@@ -129,14 +132,15 @@ int main(void)
         struct cgps_project proj;
         struct cgps_predict pred;
         struct cgps_result res;
+        const char *path = "/tmp/proj.usp";
         int i, model;
-		
+	
         memset(&opts, 0, sizeof(struct cgps_options));
         
-        opts->cgps->logger = cgps_syslog;
-        opts->cgps->indata = cgps_load_data;
+        opts.logger = cgps_syslog;
+        opts.indata = cgps_load_data;
 				
-        if(cgps_project_load(&proj, opts->proj, opts->cgps) == 0) {
+        if(cgps_project_load(&proj, path, &opts) == 0) {
                 for(i = 1; i <= proj.models; ++i) {
                         cgps_predict_init(&proj, &pred);
                         if((model = cgps_predict(&proj, i, &pred)) != -1) {
@@ -162,7 +166,7 @@ int main(void)
 .fi
 
 .SH BUGS
-This library is used in production environment with an project using quantitative data. The other three types of data loading is implemented but untested until I find a project using them.
+The code for loading data on demand (except for quantitative) needs more testing, mostly because lack of real applications and projects that uses anything else than quantitative variables.
 
 .SH AUTHOR
 Anders Lövgren <anders.lovgren@bmc.uu.se>
