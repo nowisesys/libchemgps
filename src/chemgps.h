@@ -32,70 +32,6 @@
 #include <SQXCInterface.h>
 #include <SQPCInterface.h>
 
-struct cgps_project
-{
-	struct cgps_options *opts;  /* common options */
-	SQX_ProjectHandle handle;   /* project handle */
-	int models;                 /* number of models */
-	char *name;                 /* project name */
-};
-
-typedef void (*logfunc)(void *pref, int status, int code, int level, const char *file, unsigned int line, const char *fmt, ...);
-typedef int  (*datfunc)(struct cgps_project *proj, void *data, SQX_FloatMatrix *fmx, SQX_StringMatrix *smx, SQX_StringVector *names, int type);
-
-struct cgps_options
-{
-	const char *prog;           /* log prefix */
-	int syslog;                 /* use syslog */	
-	int debug;                  /* enable debug output */
-	int verbose;                /* be more verbose */
-	int batch;                  /* enable batch job mode */
-	
-	const char *logfile;        /* simca-qp log file */
-	const char *license;        /* simca-qp license path */
-	int format;                 /* output format */
-	int result;                 /* bitmask of results */	
-	logfunc logger;             /* log function callback */
-	datfunc indata;             /* external data loader */
-};
-
-struct cgps_predict
-{
-	SQX_StringMatrix *mqrawdata;         /* pQualData */
-	SQX_StringMatrix *mqlagdata;         /* pQualLagData */
-	SQX_FloatMatrix *morawdata;          /* pObsRawData */
-	SQX_FloatMatrix *molagdata;          /* pObsLagData */
-	SQP_ObservationRawData *porawdata;   /* pObservationRawData */
-	SQP_QualitativeRawData *pqrawdata;   /* pQualitativeRawData */
-	SQX_PredictionHandle handle;         /* pPredict */
-	SQX_StringVector varnames;           /* variable names needed as input to Predict() */
-	SQX_StringVector lagparents;         /* lag parent names for Predict() */
-	SQX_StringVector qualnames;          /* qualitative names for Predict() */
-	SQX_StringVector qlagnames;          /* qualitative lagged data names for Predict() */
-	void *data;                          /* callback data for indata() */
-};
-
-struct cgps_result
-{
-	SQX_ModelType type;         /* eModelType */
-	SQX_FloatMatrix matrix;     /* oFloatMatrix */
-	SQX_IntVector index1;       /* oObsIndex1 */
-	SQX_IntVector index2;       /* oObsIndex1 */
-	FILE *out;                  /* result destination (socket or file) */
-};
-
-struct cgps_result_entry
-{
-	int value;
-	const char *name;
-	const char *desc;
-};
-
-const struct cgps_result_entry * cgps_result_entry_name(int value);
-const struct cgps_result_entry * cgps_result_entry_value(const char *name);
-
-const extern struct cgps_result_entry cgps_result_entry_list[];
-
 /*
  * Options for cgps_xxx_option().
  */
@@ -165,6 +101,70 @@ enum PREDICTED_RESULTS {
 	PREDICTED_RESULTS_ALL,            /* All results */	
 	PREDICTED_RESULTS_LAST	          /* NaN entry */
 };
+
+struct cgps_project
+{
+	struct cgps_options *opts;  /* common options */
+	SQX_ProjectHandle handle;   /* project handle */
+	int models;                 /* number of models */
+	char *name;                 /* project name */
+};
+
+typedef void (*logfunc)(void *pref, int status, int code, int level, const char *file, unsigned int line, const char *fmt, ...);
+typedef int  (*datfunc)(struct cgps_project *proj, void *data, SQX_FloatMatrix *fmx, SQX_StringMatrix *smx, SQX_StringVector *names, int type);
+
+struct cgps_options
+{
+	const char *prog;           /* log prefix */
+	int syslog;                 /* use syslog */	
+	int debug;                  /* enable debug output */
+	int verbose;                /* be more verbose */
+	int batch;                  /* enable batch job mode */
+	
+	const char *logfile;        /* simca-qp log file */
+	const char *license;        /* simca-qp license path */
+	int format;                 /* output format */
+	int result;                 /* bitmask of results */	
+	logfunc logger;             /* log function callback */
+	datfunc indata;             /* external data loader */
+};
+
+struct cgps_predict
+{
+	SQX_StringMatrix *mqrawdata;         /* pQualData */
+	SQX_StringMatrix *mqlagdata;         /* pQualLagData */
+	SQX_FloatMatrix *morawdata;          /* pObsRawData */
+	SQX_FloatMatrix *molagdata;          /* pObsLagData */
+	SQP_ObservationRawData *porawdata;   /* pObservationRawData */
+	SQP_QualitativeRawData *pqrawdata;   /* pQualitativeRawData */
+	SQX_PredictionHandle handle;         /* pPredict */
+	SQX_StringVector varnames;           /* variable names needed as input to Predict() */
+	SQX_StringVector lagparents;         /* lag parent names for Predict() */
+	SQX_StringVector qualnames;          /* qualitative names for Predict() */
+	SQX_StringVector qlagnames;          /* qualitative lagged data names for Predict() */
+	void *data;                          /* callback data for indata() */
+};
+
+struct cgps_result
+{
+	SQX_ModelType type;         /* eModelType */
+	SQX_FloatMatrix matrix;     /* oFloatMatrix */
+	SQX_IntVector index1;       /* oObsIndex1 */
+	SQX_IntVector index2;       /* oObsIndex1 */
+	FILE *out;                  /* result destination (socket or file) */
+};
+
+struct cgps_result_entry
+{
+	int value;
+	const char *name;
+	const char *desc;
+};
+
+const struct cgps_result_entry * cgps_result_entry_name(int value);
+const struct cgps_result_entry * cgps_result_entry_value(const char *name);
+
+const extern struct cgps_result_entry cgps_result_entry_list[];
 
 /*
  * Macros for manipulating bitmasks:
