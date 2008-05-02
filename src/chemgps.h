@@ -59,6 +59,15 @@
 #define CGPS_GET_QUAL_LAGGED_DATA  4
 
 /*
+ * Threading policy for the threading member of cgps_options. Any
+ * value > 0 enables threading
+ */
+#define CGPS_THREADING_UNSET    0  /* No specific threading policy */
+#define CGPS_THREADING_OFF     -1  /* Turn threading off */
+#define CGPS_THREADING_AUTO    -2  /* Detect number of CPU (cores) */
+#define CGPS_THREADING_DEFAULT -3  /* Use library default */
+
+/*
  * The various predicted results to output:
  */
 enum PREDICTED_RESULTS {
@@ -120,6 +129,7 @@ struct cgps_options
 	int debug;                  /* enable debug output */
 	int verbose;                /* be more verbose */
 	int batch;                  /* enable batch job mode */
+	int threading;              /* enable threading */
 	
 	const char *logfile;        /* simca-qp log file */
 	const char *license;        /* simca-qp license path */

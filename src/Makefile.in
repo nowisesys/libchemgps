@@ -64,7 +64,7 @@ libchemgps_la_LIBADD =
 am_libchemgps_la_OBJECTS = libchemgps_la-project.lo \
 	libchemgps_la-predict.lo libchemgps_la-result.lo \
 	libchemgps_la-chemgps.lo libchemgps_la-simcaqp.lo \
-	libchemgps_la-data.lo
+	libchemgps_la-data.lo libchemgps_la-cpuinfo.lo
 libchemgps_la_OBJECTS = $(am_libchemgps_la_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -190,7 +190,7 @@ pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libchemgps.pc
 lib_LTLIBRARIES = libchemgps.la
 libchemgps_la_SOURCES = chemgps.h simcaqp.h project.c predict.c result.c \
-  chemgps.c simcaqp.c data.c
+  chemgps.c simcaqp.c data.c cpuinfo.c
 
 libchemgps_la_LDFLAGS = -version-info 1:0:1 @SIMCAQLIBS@ @SIMCAQLDFLAGS@
 libchemgps_la_CPPFLAGS = @SIMCAQCPPFLAGS@
@@ -266,6 +266,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libchemgps_la-chemgps.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libchemgps_la-cpuinfo.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libchemgps_la-data.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libchemgps_la-predict.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libchemgps_la-project.Plo@am__quote@
@@ -334,6 +335,13 @@ libchemgps_la-data.lo: data.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='data.c' object='libchemgps_la-data.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LIBTOOL) --mode=compile --tag=CC $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libchemgps_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libchemgps_la-data.lo `test -f 'data.c' || echo '$(srcdir)/'`data.c
+
+libchemgps_la-cpuinfo.lo: cpuinfo.c
+@am__fastdepCC_TRUE@	if $(LIBTOOL) --mode=compile --tag=CC $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libchemgps_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libchemgps_la-cpuinfo.lo -MD -MP -MF "$(DEPDIR)/libchemgps_la-cpuinfo.Tpo" -c -o libchemgps_la-cpuinfo.lo `test -f 'cpuinfo.c' || echo '$(srcdir)/'`cpuinfo.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/libchemgps_la-cpuinfo.Tpo" "$(DEPDIR)/libchemgps_la-cpuinfo.Plo"; else rm -f "$(DEPDIR)/libchemgps_la-cpuinfo.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='cpuinfo.c' object='libchemgps_la-cpuinfo.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) --mode=compile --tag=CC $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libchemgps_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libchemgps_la-cpuinfo.lo `test -f 'cpuinfo.c' || echo '$(srcdir)/'`cpuinfo.c
 
 mostlyclean-libtool:
 	-rm -f *.lo

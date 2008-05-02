@@ -38,6 +38,8 @@
 #include "chemgps.h"
 #include "simcaqp.h"
 
+extern int cgps_detect_cpus(struct cgps_project *proj);
+
 /*
  * Loads the project in path.
  */
@@ -100,6 +102,37 @@ int cgps_project_load(struct cgps_project *proj, const char *path, struct cgps_o
 		}
 	 }
 	 */
+
+	if(opts->threading != CGPS_THREADING_UNSET) {
+		if(opts->threading > 0) {
+			if(!SQX_UseMultiThreading(1, opts->threading)) {
+				logerr("failed turn multithreading on (user defined: %d number of cpus)",
+				       opts->threading);
+				return -1;
+			}
+			debug("multithreading turned on (user defined: %d number of cpus)",
+			      opts->threading);
+		} else if(opts->threading == CGPS_THREADING_OFF) {
+			if(!SQX_UseMultiThreading(0, 0)) {
+				logerr("failed turn multithreading off");
+				return -1;
+			}
+			debug("multithreading turned off");
+		} else if(opts->threading == CGPS_THREADING_AUTO) {
+			int cpus = cgps_detect_cpus(proj);
+			if(!SQX_UseMultiThreading(1, cpus)) {
+				logerr("failed turn multithreading on (auto: %d number of cpus)", cpus);
+				return -1;
+			}
+			debug("multithreading turned on (auto: %d number of cpus)", cpus);
+		} else if(opts->threading == CGPS_THREADING_DEFAULT) {
+			if(!SQX_UseMultiThreading(1, -1)) {
+				logerr("failed turn multithreading on (default number of cpus)");
+				return -1;
+			}
+			debug("multithreading turned on (default number of cpus)");
+		}
+	}
 	
 	if(!SQX_AddProject(path, 1, NULL, &proj->handle)) {
 		/*
