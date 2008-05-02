@@ -55,7 +55,7 @@ int cgps_predict(struct cgps_project *proj, int index, struct cgps_predict *pred
 {
 	int fitted;
 	int model;
-			
+	
 	if(!SQX_GetModelNumber(proj->handle, index, &model)) {
 		logerr("failed get model number for model index %d", index);
 		return -1;
@@ -205,4 +205,9 @@ void cgps_predict_cleanup(struct cgps_project *proj, struct cgps_predict *pred)
 		free(pred->mqlagdata);
 		pred->mqlagdata = NULL;
 	}
+	
+	if(!SQP_ReleaseHandle(pred->handle)) {
+		logerr("failed release handle for predict");
+	}
+	pred->handle = 0;
 }
