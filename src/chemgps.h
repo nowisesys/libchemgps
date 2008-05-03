@@ -131,8 +131,8 @@ struct cgps_options
 	int batch;                  /* enable batch job mode */
 	int threading;              /* enable threading */
 	
-	const char *logfile;        /* simca-qp log file */
-	const char *license;        /* simca-qp license path */
+	char *logfile;              /* simca-qp log file */
+	char *license;              /* simca-qp license path */
 	int format;                 /* output format */
 	int result;                 /* bitmask of results */	
 	logfunc logger;             /* log function callback */

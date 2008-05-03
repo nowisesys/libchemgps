@@ -61,7 +61,7 @@ int cgps_set_option(struct cgps_project *proj, int option, const void *value)
 		proj->opts->prog = (const char *)value;
 		break;
 	case CGPS_OPTION_LICENSE:
-		proj->opts->license = (const char *)value;
+		proj->opts->license = (char *)value;
 		break;
 	default:
 		logerr("unknown option %d for cgps_set_option", option);
@@ -97,7 +97,7 @@ int cgps_get_option(struct cgps_project *proj, int option, void *value)
 		*(int *)value = proj->opts->result;
 		break;
 	case CGPS_OPTION_PREFIX:
-		(const char *)value = proj->opts->prog;
+		value = (char *)proj->opts->prog;
 		break;
 	default:
 		logerr("unknown option %d for cgps_set_option", option);
