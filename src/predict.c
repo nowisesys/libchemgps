@@ -152,10 +152,18 @@ void cgps_predict_cleanup(struct cgps_project *proj, struct cgps_predict *pred)
 	/*
 	 * Cleanup string vectors.
 	 */
-	SQX_ClearStringVector(&pred->varnames);
-	SQX_ClearStringVector(&pred->lagparents);
-	SQX_ClearStringVector(&pred->qualnames);
-	SQX_ClearStringVector(&pred->qlagnames);
+	if(SQX_GetNumStringsInVector(&pred->varnames)) {
+		SQX_ClearStringVector(&pred->varnames);
+	}
+	if(SQX_GetNumStringsInVector(&pred->lagparents)) {
+		SQX_ClearStringVector(&pred->lagparents);
+	}
+	if(SQX_GetNumStringsInVector(&pred->qualnames)) {
+		SQX_ClearStringVector(&pred->qualnames);
+	}
+	if(SQX_GetNumStringsInVector(&pred->qlagnames)) {
+		SQX_ClearStringVector(&pred->qlagnames);
+	}
 	
 	/*
 	 * Cleanup observation data.
