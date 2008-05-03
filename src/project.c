@@ -185,9 +185,10 @@ int cgps_project_load(struct cgps_project *proj, const char *path, struct cgps_o
 void cgps_project_close(struct cgps_project *proj)
 {
 	if(proj->handle) {
-		debug("cleaning up after simca runner");
 		if(!SQX_RemoveProject(proj->handle)) {
 			logerr("failed remove Simca-Q project");
+		} else {
+			debug("successful closed project");
 		}
 	}
 }
