@@ -38,7 +38,7 @@
 
 #define PROC_CPUINFO "/proc/cpuinfo"
 #define PROC_MAXLINE 256
-#define PROC_CPUHEAD "processor       :"
+#define PROC_CPUHEAD "processor\t:"
 
 /*
  * Detect number of CPU's (cores) in system. Returns -1 on failure.
