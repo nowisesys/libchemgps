@@ -174,7 +174,7 @@ struct cgps_result_entry
 const struct cgps_result_entry * cgps_result_entry_name(int value);
 const struct cgps_result_entry * cgps_result_entry_value(const char *name);
 
-const extern struct cgps_result_entry cgps_result_entry_list[];
+extern const struct cgps_result_entry cgps_result_entry_list[];
 
 /*
  * Macros for manipulating bitmasks:
