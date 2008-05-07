@@ -119,7 +119,7 @@ struct cgps_project
 	char *name;                 /* project name */
 };
 
-typedef void (*logfunc)(void *pref, int status, int code, int level, const char *file, unsigned int line, const char *fmt, ...);
+typedef void (*logfunc)(void *pref, int errcode, int level, const char *file, unsigned int line, const char *fmt, ...);
 typedef int  (*datfunc)(struct cgps_project *proj, void *data, SQX_FloatMatrix *fmx, SQX_StringMatrix *smx, SQX_StringVector *names, int type);
 
 struct cgps_options

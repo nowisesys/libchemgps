@@ -76,7 +76,7 @@ void cgps_logsimca(const char *msg, int status)
 /*
  * The default stderr logger.
  */
-void cgps_stderr_logger(void *pref, int status, int code, int level, const char *file, unsigned int line, const char *fmt, ...)
+void cgps_stderr_logger(void *pref, int errcode, int level, const char *file, unsigned int line, const char *fmt, ...)
 {
 	struct cgps_options *opts = (struct cgps_options *)pref;
 	
@@ -98,8 +98,8 @@ void cgps_stderr_logger(void *pref, int status, int code, int level, const char 
         vfprintf(stderr, fmt, ap);
         va_end(ap);
 
-        if(code) {
-		fprintf(stderr, " (%s)", strerror(code));
+        if(errcode) {
+		fprintf(stderr, " (%s)", strerror(errcode));
 	}
         if(level == LOG_DEBUG) {
 		if(opts->debug > 1) {

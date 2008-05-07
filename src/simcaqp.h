@@ -56,21 +56,21 @@ extern struct predicted_result_entry predicted_result_list[];
  */
 #if defined(__GNUC__)
 # define logerr(fmt, args...) do { \
-	proj->opts->logger(proj->opts, 0 , errno ? errno : 0 , LOG_ERR , __FILE__ , __LINE__ , (fmt) , ## args); \
+	proj->opts->logger(proj->opts, errno ? errno : 0 , LOG_ERR , __FILE__ , __LINE__ , (fmt) , ## args); \
 } while(0)
 
 # define logwarn(fmt, args...) do { \
-	proj->opts->logger(proj->opts, 0 , 0 , LOG_WARNING , __FILE__ , __LINE__ , (fmt) , ## args); \
+	proj->opts->logger(proj->opts, 0 , LOG_WARNING , __FILE__ , __LINE__ , (fmt) , ## args); \
 } while(0)
 
 # define loginfo(fmt, args...) do { \
-	proj->opts->logger(proj->opts, 0 , 0 , LOG_INFO , __FILE__ , __LINE__ , (fmt) , ## args); \
+	proj->opts->logger(proj->opts, 0 , LOG_INFO , __FILE__ , __LINE__ , (fmt) , ## args); \
 } while(0)
 # if ! defined(NDEBUG)
 
 #  define debug(fmt, args...) do { \
 	if(proj->opts->debug) { \
-		proj->opts->logger(proj->opts, 0 , 0 , LOG_DEBUG , __FILE__ , __LINE__ , (fmt) , ## args); \
+		proj->opts->logger(proj->opts, 0 , LOG_DEBUG , __FILE__ , __LINE__ , (fmt) , ## args); \
 	} \
 } while(0)
 # else /* ! defined(NDEBUG) */
@@ -80,21 +80,21 @@ extern struct predicted_result_entry predicted_result_list[];
 #else   /* ! defined(__GNUC__) */
 # if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L  
 #  define logerr(...) do { \
-	proj->opts->logger(proj->opts, 0 , errno ? errno : 0 , LOG_ERR , __FILE__ , __LINE__ , __VA_ARGS__); \
+	proj->opts->logger(proj->opts, errno ? errno : 0 , LOG_ERR , __FILE__ , __LINE__ , __VA_ARGS__); \
 } while(0)
 
 #  define logwarn(...) do { \
-	proj->opts->logger(proj->opts, 0 , 0 , LOG_WARNING , __FILE__ , __LINE__ , __VA_ARGS__); \
+	proj->opts->logger(proj->opts, 0 , LOG_WARNING , __FILE__ , __LINE__ , __VA_ARGS__); \
 } while(0)
 
 #  define loginfo(...) do { \
-	proj->opts->logger(proj->opts, 0 , 0 , LOG_INFO , __FILE__ , __LINE__ , __VA_ARGS__); \
+	proj->opts->logger(proj->opts, 0 , LOG_INFO , __FILE__ , __LINE__ , __VA_ARGS__); \
 } while(0)
 
 #  if ! defined(NDEBUG)
 #   define debug(...) do { \
 	if(proj->opts->debug) { \
-		proj->opts->logger(proj->opts, 0 , 0 , LOG_DEBUG , __FILE__ , __LINE__ , __VA_ARGS__); \
+		proj->opts->logger(proj->opts, 0 , LOG_DEBUG , __FILE__ , __LINE__ , __VA_ARGS__); \
 	} \
 } while(0)
 #  else /* ! defined(NDEBUG) */
@@ -113,7 +113,7 @@ extern struct predicted_result_entry predicted_result_list[];
 /*
  * Default stderr logger:
  */
-void cgps_stderr_logger(void *opts, int status, int code, int level, const char *file, unsigned int line, const char *fmt, ...);
+void cgps_stderr_logger(void *opts, int errcode, int level, const char *file, unsigned int line, const char *fmt, ...);
 
 /*
  * Get Simca-QP error message:
