@@ -148,7 +148,7 @@ int cgps_predict(struct cgps_project *proj, int index, struct cgps_predict *pred
 void cgps_predict_cleanup(struct cgps_project *proj, struct cgps_predict *pred)
 {
 	debug("cleaning up after prediction");
-
+	
 	/*
 	 * Cleanup string vectors.
 	 */
@@ -213,9 +213,11 @@ void cgps_predict_cleanup(struct cgps_project *proj, struct cgps_predict *pred)
 		free(pred->mqlagdata);
 		pred->mqlagdata = NULL;
 	}
-	
-	if(!SQP_ReleaseHandle(pred->handle)) {
-		logerr("failed release handle for predict");
+
+	if(pred->handle) {
+		if(!SQP_ReleaseHandle(pred->handle)) {
+			logerr("failed release handle for predict");
+		}
+		pred->handle = 0;
 	}
-	pred->handle = 0;
 }
