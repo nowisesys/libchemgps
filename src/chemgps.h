@@ -207,7 +207,7 @@ void cgps_predict_init(struct cgps_project *proj, struct cgps_predict *pred, voi
 /*
  * Make prediction and returns model number or -1 on error.
  */
-int cgps_predict(struct cgps_project *proj, int index, struct cgps_predict *pred);
+int cgps_predict(struct cgps_project *proj, int modind, struct cgps_predict *pred);
 
 /*
  * Cleanup after an prediction.
