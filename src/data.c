@@ -95,7 +95,10 @@ int cgps_predict_get_raw_data(struct cgps_project *proj, int model, struct cgps_
 	 */
 	if((num = SQX_GetNumStringsInVector(names)) > 0) {
 		debug("there are %d \"ordinary\" variables in this model", num);
-				
+
+		if(pred->morawdata) {
+			free(pred->morawdata);
+		}
 		pred->morawdata = malloc(sizeof(SQX_FloatMatrix));
 		if(!pred->morawdata) {
 			logerr("failed alloc memory");
@@ -144,6 +147,9 @@ int cgps_predict_get_lag_parents(struct cgps_project *proj, int model, struct cg
 		 * TODO: Check this code against SQPrepareForPredictionExample.c line 83.
 		 */
 		
+		if(pred->molagdata) {
+			free(pred->molagdata);
+		}
 		pred->molagdata = malloc(sizeof(SQX_FloatMatrix));
 		if(!pred->molagdata) {
 			logerr("failed alloc memory");
@@ -202,6 +208,9 @@ int cgps_predict_get_qual_data(struct cgps_project *proj, int model, struct cgps
 		 * TODO: Check this code against SQPrepareForPredictionExample.c line 156.
 		 */
 		
+		if(pred->mqrawdata) {
+			free(pred->mqrawdata);
+		}
 		pred->mqrawdata = malloc(sizeof(SQX_StringMatrix));
 		if(!pred->mqrawdata) {
 			logerr("failed alloc memory");
@@ -250,6 +259,9 @@ int cgps_predict_get_qual_data_lagged(struct cgps_project *proj, int model, stru
 		 * TODO: Check this code against SQPrepareForPredictionExample.c line 209.
 		 */
 		
+		if(pred->mqrawdata) {
+			free(pred->mqrawdata);
+		}
 		pred->mqrawdata = malloc(sizeof(SQX_StringMatrix));
 		if(!pred->mqrawdata) {
 			logerr("failed alloc memory");
