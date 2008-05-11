@@ -43,7 +43,11 @@
  */
 void cgps_predict_init(struct cgps_project *proj, struct cgps_predict *pred, void *data)
 {
-	debug("cgps_predict_init: initilizing predict structure");
+	if(proj->handle) {
+		debug("initilizing before predict");
+	} else {
+		logwarn("no valid project handle");
+	}
 	memset(pred, 0, sizeof(struct cgps_predict));
 	pred->data = data;
 }
@@ -147,7 +151,11 @@ int cgps_predict(struct cgps_project *proj, int index, struct cgps_predict *pred
  */
 void cgps_predict_cleanup(struct cgps_project *proj, struct cgps_predict *pred)
 {
-	debug("cleaning up after prediction");
+	if(proj->handle) {
+		debug("cleaning up after prediction");
+	} else {
+		logwarn("no valid project handle");
+	}
 	
 	/*
 	 * Cleanup string vectors.
