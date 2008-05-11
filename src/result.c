@@ -1038,11 +1038,13 @@ int cgps_result(struct cgps_project *proj, int model, struct cgps_predict *pred,
 		if(res->type == SQX_UnDefined) {
 			debug("the model type can not be determined");
 		} else {
+#ifndef NDEBUG
 			const char *types[] = {
 				"undefined", "PCA_X", "PCA_Y", "PCA_All", 
 				"PCA_Class", "PSL_Class", "PLS", "PLS_DA"
 			};
 			debug("the model is a %s model", types[res->type]);
+#endif /* NDEBUG */
 		}
 	}
 	
