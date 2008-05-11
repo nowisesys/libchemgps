@@ -380,7 +380,7 @@ int cgps_result_contrib_dmod_x_group(struct cgps_project *proj, struct cgps_pred
 	return 0;
 }
 
-int cgps_result_dmod_x_ps(struct cgps_project *proj, struct cgps_predict *pred, struct cgps_result *res, int numcomp)
+int cgps_result_dmod_x_ps(struct cgps_project *proj, struct cgps_predict *pred, struct cgps_result *res)
 {
 	const struct cgps_result_entry *entry;
 	
@@ -402,7 +402,7 @@ int cgps_result_dmod_x_ps(struct cgps_project *proj, struct cgps_predict *pred, 
 	return 0;
 }
 
-int cgps_result_dmod_x_ps_comb(struct cgps_project *proj, struct cgps_predict *pred, struct cgps_result *res, int numcomp)
+int cgps_result_dmod_x_ps_comb(struct cgps_project *proj, struct cgps_predict *pred, struct cgps_result *res)
 {
 	const struct cgps_result_entry *entry;
 	
@@ -424,7 +424,7 @@ int cgps_result_dmod_x_ps_comb(struct cgps_project *proj, struct cgps_predict *p
 	return 0;
 }
 
-int cgps_result_pmod_x_ps(struct cgps_project *proj, struct cgps_predict *pred, struct cgps_result *res, int numcomp)
+int cgps_result_pmod_x_ps(struct cgps_project *proj, struct cgps_predict *pred, struct cgps_result *res)
 {
 	const struct cgps_result_entry *entry;
 	
@@ -444,7 +444,7 @@ int cgps_result_pmod_x_ps(struct cgps_project *proj, struct cgps_predict *pred, 
 	return 0;
 }
 
-int cgps_result_pmod_x_comb_ps(struct cgps_project *proj, struct cgps_predict *pred, struct cgps_result *res, int numcomp)
+int cgps_result_pmod_x_comb_ps(struct cgps_project *proj, struct cgps_predict *pred, struct cgps_result *res)
 {
 	const struct cgps_result_entry *entry;
 	
@@ -630,7 +630,7 @@ int cgps_result_x_obs_pred_ps(struct cgps_project *proj, struct cgps_predict *pr
 	return 0;
 }
 
-int cgps_result_x_var_ps(struct cgps_project *proj, struct cgps_predict *pred, struct cgps_result *res, int numcomp)
+int cgps_result_x_var_ps(struct cgps_project *proj, struct cgps_predict *pred, struct cgps_result *res)
 {
 	const struct cgps_result_entry *entry;
 	
@@ -1074,16 +1074,16 @@ int cgps_result(struct cgps_project *proj, int model, struct cgps_predict *pred,
 	}
 	
 	if(cgps_result_isset(proj->opts->result, PREDICTED_DMOD_X_PS)) {
-		cgps_result_dmod_x_ps(proj, pred, res, numcomp);
+		cgps_result_dmod_x_ps(proj, pred, res);
 	}
 	if(cgps_result_isset(proj->opts->result, PREDICTED_DMOD_X_PS_COMB)) {
-		cgps_result_dmod_x_ps_comb(proj, pred, res, numcomp);
+		cgps_result_dmod_x_ps_comb(proj, pred, res);
 	}
 	if(cgps_result_isset(proj->opts->result, PREDICTED_PMOD_X_PS)) {
-		cgps_result_pmod_x_ps(proj, pred, res, numcomp);
+		cgps_result_pmod_x_ps(proj, pred, res);
 	}
 	if(cgps_result_isset(proj->opts->result, PREDICTED_PMOD_X_COMB_PS)) {
-		cgps_result_pmod_x_comb_ps(proj, pred, res, numcomp);
+		cgps_result_pmod_x_comb_ps(proj, pred, res);
 	}
 
 	/*
@@ -1112,7 +1112,7 @@ int cgps_result(struct cgps_project *proj, int model, struct cgps_predict *pred,
 		cgps_result_x_obs_pred_ps(proj, pred, res, numcomp);
 	}
 	if(cgps_result_isset(proj->opts->result, PREDICTED_X_VAR_PS)) {
-		cgps_result_x_var_ps(proj, pred, res, numcomp);
+		cgps_result_x_var_ps(proj, pred, res);
 	}
 	if(cgps_result_isset(proj->opts->result, PREDICTED_X_VAR_RES_PS)) {
 		cgps_result_x_var_res_ps(proj, pred, res, numcomp);
