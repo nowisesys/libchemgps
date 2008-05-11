@@ -949,19 +949,27 @@ int cgps_result_y_var_res_ps(struct cgps_project *proj, struct cgps_predict *pre
 }
 
 /*
- * Initilize result.
+ * Initilize result, the enforcement of a valid project handle is not strictly
+ * required, but follow our documented and suggested program flow.
  */
 int cgps_result_init(struct cgps_project *proj, struct cgps_result *res)
 {	
-	SQX_InitIntVector(&res->index1, 2);
-	SQX_SetDataInIntVector(&res->index1, 1, 1);
-	SQX_SetDataInIntVector(&res->index1, 2, 2);
-	
-	SQX_InitIntVector(&res->index2, 2);
-	SQX_SetDataInIntVector(&res->index2, 1, 3);
-	SQX_SetDataInIntVector(&res->index2, 2, 4);
+	if(proj->handle) {
+		debug("initilizing result object");
 		
-	return 0;
+		SQX_InitIntVector(&res->index1, 2);
+		SQX_SetDataInIntVector(&res->index1, 1, 1);
+		SQX_SetDataInIntVector(&res->index1, 2, 2);
+		
+		SQX_InitIntVector(&res->index2, 2);
+		SQX_SetDataInIntVector(&res->index2, 1, 3);
+		SQX_SetDataInIntVector(&res->index2, 2, 4);
+		
+		return 0;
+	}
+	
+	logerr("no valid project handle");
+	return -1;		
 }
 
 /*
@@ -1159,6 +1167,12 @@ int cgps_result(struct cgps_project *proj, int model, struct cgps_predict *pred,
  */
 void cgps_result_cleanup(struct cgps_project *proj, struct cgps_result *res)
 {
+	if(proj->handle) {
+		debug("cleaning up result object");
+	} else {
+		logwarn("no valid project handle");
+	}
+	
 	SQX_ClearFloatMatrix(&res->matrix);
 	SQX_ClearIntVector(&res->index1);
 	SQX_ClearIntVector(&res->index2);
