@@ -1,6 +1,12 @@
 Version 0.6.2 (2008-05-26);
 
 	* Maintenance relese that fixes small errors in the installation.
+	  The Simca QP library path should now be auto-detected if installed
+	  in common directory pathes (like /usr/local/libchemgps a.s.o.).
+	
+	* Fixed compiler warnings about unused variables.
+	
+	* Memory leaks (reported by valgrind) should be fixed as long as possible.
 	
 Version 0.6.1 (2008-04-09):
 	
