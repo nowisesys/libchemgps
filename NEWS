@@ -1,4 +1,9 @@
-Version 0.6.2 (2008-05-26);
+Version 0.6.3 (2014-03-11):
+
+        * Maintenance realease. Fixes linking error (-soname) using modern 
+	  libtool (2.4.x) and autoconf (2.69).
+
+Version 0.6.2 (2008-05-26):
 
 	* Maintenance relese that fixes small errors in the installation.
 	  The Simca QP library path should now be auto-detected if installed
