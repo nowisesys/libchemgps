@@ -36,6 +36,7 @@
 
 #include "chemgps.h"
 #include "simcaqp.h"
+#include "result.h"
 
 /*
  * The lookup table of all prediction results.
