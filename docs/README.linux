@@ -12,4 +12,4 @@ Some function don't work on Linux version of Simca-QP:
       Both these function makes the application hang waiting for another
       thread to wake up process sleeping on futex(2) call (a bug?)
       
-// Anders Lövgren, 2008-01-23
+// Anders LÃ¶vgren, 2008-01-23

@@ -1,6 +1,6 @@
 /* Simca-QP predictions for the ChemGPS project.
  * 
- * Copyright (C) 2007-2008 Anders Lövgren and the Computing Department, 
+ * Copyright (C) 2007-2008 Anders LÃ¶vgren and the Computing Department, 
  * Uppsala Biomedical Centre, Uppsala University.
  * 
  * ----------------------------------------------------------------------
@@ -20,7 +20,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  * 
  * ----------------------------------------------------------------------
- *  Contact: Anders Lövgren <anders.lovgren@bmc.uu.se>
+ *  Contact: Anders LÃ¶vgren <andlov@nowise.se>
  * ----------------------------------------------------------------------
  */
 
