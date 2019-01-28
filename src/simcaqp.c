@@ -25,12 +25,12 @@
  */
 
 #ifdef HAVE_CONFIG_H
-# include "config.h"
+#include "config.h"
 #endif
 
 #include <stdio.h>
 #ifdef HAVE_STRING_H
-# include <string.h>
+#include <string.h>
 #endif
 #include <stdarg.h>
 
@@ -40,13 +40,14 @@
 /*
  * Get latest error string from Simca-Q.
  */
-const char * cgps_simcaq_error(void)
-{
-	static const char *sqperr;
-	if(!SQX_GetLatestError(&sqperr)) {
-		sqperr = "unknown Simca-Q error (get error string failed)";
-	}
-	return sqperr;
+const char * cgps_simcaq_error(void) {
+    static char *sqperr;
+    
+    if (!SQX_GetLatestError(&sqperr)) {
+        return "unknown Simca-Q error (get error string failed)";
+    } else {
+        return sqperr;
+    }
 }
 
 /*
@@ -57,54 +58,53 @@ const char * cgps_simcaq_error(void)
 /*
 void cgps_logsimca(const char *msg, int status)
 {
-	switch(status) {
-	case 0:
-		if(!opts->batch) {
-			loginfo("simca lib: %s", msg);
-		}
-		break;
-	case 1:
-		logerr("simca lib: %s", msg);
-		break;
-	default:
-		logerr("simca lib: unknown status %d (msg=%s)", status, msg);
-		break;
-	}
+        switch(status) {
+        case 0:
+                if(!opts->batch) {
+                        loginfo("simca lib: %s", msg);
+                }
+                break;
+        case 1:
+                logerr("simca lib: %s", msg);
+                break;
+        default:
+                logerr("simca lib: unknown status %d (msg=%s)", status, msg);
+                break;
+        }
 }
-*/
+ */
 
 /*
  * The default stderr logger.
  */
-void cgps_stderr_logger(void *pref, int errcode, int level, const char *file, unsigned int line, const char *fmt, ...)
-{
-	struct cgps_options *opts = (struct cgps_options *)pref;
-	
-	switch(level) {
-	case LOG_ERR:
-	case LOG_CRIT:
-		fprintf(stderr, "%s: error: ", opts->prog);
-		break;
-	case LOG_DEBUG:
-		fprintf(stderr, "debug: ");
-		break;
-	case LOG_WARNING:
-		fprintf(stderr, "%s: warning: ", opts->prog);
-		break;
-	}
+void cgps_stderr_logger(void *pref, int errcode, int level, const char *file, unsigned int line, const char *fmt, ...) {
+    struct cgps_options *opts = (struct cgps_options *) pref;
 
-        va_list ap;
-        va_start(ap, fmt);
-        vfprintf(stderr, fmt, ap);
-        va_end(ap);
+    switch (level) {
+        case LOG_ERR:
+        case LOG_CRIT:
+            fprintf(stderr, "%s: error: ", opts->prog);
+            break;
+        case LOG_DEBUG:
+            fprintf(stderr, "debug: ");
+            break;
+        case LOG_WARNING:
+            fprintf(stderr, "%s: warning: ", opts->prog);
+            break;
+    }
 
-        if(errcode) {
-		fprintf(stderr, " (%s)", strerror(errcode));
-	}
-        if(level == LOG_DEBUG) {
-		if(opts->debug > 1) {
-			fprintf(stderr, "\t(%s:%d): ", file, line);
-	        }
-	}
-	fprintf(stderr, "\n");
+    va_list ap;
+    va_start(ap, fmt);
+    vfprintf(stderr, fmt, ap);
+    va_end(ap);
+
+    if (errcode) {
+        fprintf(stderr, " (%s)", strerror(errcode));
+    }
+    if (level == LOG_DEBUG) {
+        if (opts->debug > 1) {
+            fprintf(stderr, "\t(%s:%d): ", file, line);
+        }
+    }
+    fprintf(stderr, "\n");
 }
