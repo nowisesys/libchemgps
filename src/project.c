@@ -38,8 +38,6 @@
 #include "chemgps.h"
 #include "simcaqp.h"
 
-extern int cgps_detect_cpus(struct cgps_project *proj);
-
 /*
  * Loads the project in path.
  */

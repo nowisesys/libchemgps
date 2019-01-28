@@ -128,4 +128,6 @@ int cgps_predict_get_lag_parents(struct cgps_project *proj, int model, struct cg
 int cgps_predict_get_qual_data(struct cgps_project *proj, int model, struct cgps_predict *pred, SQX_StringVector *names);
 int cgps_predict_get_qual_data_lagged(struct cgps_project *proj, int model, struct cgps_predict *pred, SQX_StringVector *names);
 
+int cgps_detect_cpus(struct cgps_project *proj);
+
 #endif /* __SIMCAQP_H__ */
