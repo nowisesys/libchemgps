@@ -48,7 +48,7 @@
 static int cgps_predict_vecstr(struct cgps_project *proj, char **buff, size_t *size, SQX_StringVector *names)
 {
 	FILE *fp;
-	char *del  = "";
+	const char *del  = "";
 	const char *str;
 	int i, num;
 	

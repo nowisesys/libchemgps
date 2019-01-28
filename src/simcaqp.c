@@ -42,7 +42,7 @@
  */
 const char * cgps_simcaq_error(void)
 {
-	static char *sqperr;
+	static const char *sqperr;
 	if(!SQX_GetLatestError(&sqperr)) {
 		sqperr = "unknown Simca-Q error (get error string failed)";
 	}
