@@ -277,23 +277,23 @@ int cgps_predict_get_qual_data_lagged(struct cgps_project *proj, int model, stru
 			int i;
 			
 			for(i = 0; i < num; ++i) {
-				SQX_StringVector names;
+				SQX_StringVector lnn;
 				char *buff = NULL;
 				size_t size = 0;
 				
-				if(!SQP_GetCompleteVariableLagNames(proj->handle, model, i + 1, 1, &names)) {
+				if(!SQP_GetCompleteVariableLagNames(proj->handle, model, i + 1, 1, &lnn)) {
 					logerr("failed get qualitative lag variable names (%s)", cgps_simcaq_error());
 					return 0;     /* not critical */
 				}
 				
-				if(cgps_predict_vecstr(proj, &buff, &size, &names) < 0) {
+				if(cgps_predict_vecstr(proj, &buff, &size, &lnn) < 0) {
 					logerr("failed get qualitative lag variable names");
 					free(buff);
 					return 0;     /* not critical */
 				}
 				debug("qualitative lag variable names: %s", buff);
 				free(buff);
-				SQX_ClearStringVector(&names);
+				SQX_ClearStringVector(&lnn);
 			}
 		}
 	}
