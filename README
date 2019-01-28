@@ -3,8 +3,8 @@
 ** GENERAL:
 
    The libchemgps library is a generic library for making predictions using
-   Simca-QP. Use this library to write standalone and client/server
-   applications for Simca-QP. The chemgps-sqp2 package contains both a fully
+   SIMCA-QP. Use this library to write standalone and client/server
+   applications for SIMCA-QP. The chemgps-sqp2 package contains both a fully
    functional standalone application as well as an client/server solution.
    
    You need a separate license from Umetrics (http://www.umetrics.com) for 
