@@ -1,4 +1,4 @@
-Some function don't work on Linux version of Simca-QP:
+Some function don't work on Linux version of SIMCA-QP:
 
 * int SQX_GetVersionNumber(char **):
 

@@ -1,4 +1,4 @@
-/* Simca-QP predictions for the ChemGPS project.
+/* SIMCA-QP predictions for the ChemGPS project.
  * 
  * Copyright (C) 2007-2008 Anders Lövgren and the Computing Department, 
  * Uppsala Biomedical Centre, Uppsala University.
@@ -116,7 +116,7 @@ extern struct predicted_result_entry predicted_result_list[];
 void cgps_stderr_logger(void *opts, int errcode, int level, const char *file, unsigned int line, const char *fmt, ...);
 
 /*
- * Get Simca-QP error message:
+ * Get SIMCA-QP error message:
  */
 const char * cgps_simcaq_error(void);
 

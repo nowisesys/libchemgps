@@ -20,13 +20,13 @@
 .\"
 .\"
 .SH NAME
-libchemgps \- C library for making predictions using Simca-QP.
+libchemgps \- C library for making predictions using SIMCA-QP.
 .SH SYNOPSIS
 .B #include <chemgps.h>
 .SH DESCRIPTION
-libchemgps is a library for making predictions using the Simca-QP from Umetrics. You need a valid license for Simca-QP to use this library.
+libchemgps is a library for making predictions using the SIMCA-QP from Umetrics. You need a valid license for SIMCA-QP to use this library.
 .PP
-The libchemgps library tries to make it easy to build both standalone applications and client/server applications that uses Simca-QP. The idea behind this library is to enable loading the project once and making multiple predictions against it (the client/server model), thus reducing the waste of time loading the project over and over (a time consuming task).
+The libchemgps library tries to make it easy to build both standalone applications and client/server applications that uses SIMCA-QP. The idea behind this library is to enable loading the project once and making multiple predictions against it (the client/server model), thus reducing the waste of time loading the project over and over (a time consuming task).
 .PP
 Loading data for predictions requires a user supplied callback function. That's a design decision that enables loading of data for prediction from a number of different data sources (like databases, files/pipes or over the network) while providing a clean library API. The library implements on demand loading of quantitative, qualitative, parents lagged and qualitative lagged data.
 .PP

@@ -1,4 +1,4 @@
-/* Simca-QP predictions for the ChemGPS project.
+/* SIMCA-QP predictions for the ChemGPS project.
  * 
  * Copyright (C) 2007-2008 Anders Lövgren and the Computing Department, 
  * Uppsala Biomedical Centre, Uppsala University.
@@ -100,7 +100,7 @@ int cgps_predict(struct cgps_project *proj, int index, struct cgps_predict *pred
 
 	/*
 	 * Store the "ordinary" observation data in the container that 
-	 * is sent to Simca-QP.
+	 * is sent to SIMCA-QP.
 	 */
 	if(pred->morawdata || pred->molagdata) {
 		pred->porawdata = malloc(sizeof(SQP_ObservationRawData));
@@ -116,7 +116,7 @@ int cgps_predict(struct cgps_project *proj, int index, struct cgps_predict *pred
 	
 	/*
 	 * Store the qualitative observation data in the container that 
-	 * is sent to Simca-QP.
+	 * is sent to SIMCA-QP.
 	 */
 	if(pred->mqrawdata || pred->mqlagdata) {
 		pred->pqrawdata = malloc(sizeof(SQP_QualitativeRawData));
