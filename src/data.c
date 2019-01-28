@@ -1,8 +1,9 @@
 /* SIMCA-QP predictions for the ChemGPS project.
  * 
- * Copyright (C) 2007-2008 Anders Lövgren and the Computing Department, 
+ * Copyright (C) 2007-2018 Anders Lövgren and the Computing Department,
  * Uppsala Biomedical Centre, Uppsala University.
  * 
+ * Copyright (C) 2018-2019 Anders Lövgren, Nowise Systems
  * ----------------------------------------------------------------------
  * 
  * This program is free software; you can redistribute it and/or modify
